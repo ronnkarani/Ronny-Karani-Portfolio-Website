@@ -951,6 +951,79 @@ h1 {
   margin-top: 2rem;
 }
 
+/* Category Search Styles */
+.category-search {
+  margin-bottom: 2rem;
+  background: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.category-search h3 {
+  color: #58a6ff;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: center;
+}
+
+.category-filter {
+  padding: 0.5rem 1rem;
+  background: #0d0d0d;
+  color: #ccc;
+  border: 1px solid #333;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.category-filter:hover {
+  background: #58a6ff;
+  color: #fff;
+  border-color: #58a6ff;
+  transform: translateY(-2px);
+}
+
+.category-filter.active {
+  background: #58a6ff;
+  color: #fff;
+  border-color: #58a6ff;
+}
+
+.category-filter.all {
+  background: #333;
+  border: 1px dashed #58a6ff;
+}
+
+.blog-category, .project-category {
+  display: inline-block;
+  background: #333;
+  color: #58a6ff;
+  padding: 0.3rem 0.7rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .category-filters {
+    gap: 0.5rem;
+  }
+  
+  .category-filter {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
 /* ===== Scroll to Top Button ===== */
 #scrollTopBtn {
   display: none;

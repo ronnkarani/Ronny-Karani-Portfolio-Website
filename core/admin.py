@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, BlogPost, SocialLink, Skill, About, Hero, Testimonial
+from .models import Project, BlogPost, SocialLink, Skill, About, Hero, Testimonial, BlogCategory, ProjectCategory
 
 @admin.register(Hero)
 class HeroAdmin(admin.ModelAdmin):
@@ -16,7 +16,20 @@ class AboutAdmin(admin.ModelAdmin):
     list_display = ("title", "updated_at")
     ordering = ("-updated_at",)
     
-    
+# Add these to your admin.py file
+
+@admin.register(BlogCategory)
+class BlogCategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug", "created_at")
+    prepopulated_fields = {"slug": ("name",)}
+    ordering = ("name",)
+
+@admin.register(ProjectCategory)
+class ProjectCategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug", "created_at")
+    prepopulated_fields = {"slug": ("name",)}
+    ordering = ("name",)
+
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ("title", "created_at")

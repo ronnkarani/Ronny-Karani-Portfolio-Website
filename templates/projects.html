@@ -8,6 +8,19 @@
 <main class="section projects-page">
   <div class="container">
     <h2 class="section-title">📚 All Projects </h2>
+     <!-- Project Category Filters -->
+    <div class="category-search">
+      <h3>Filter by Category</h3>
+      <div class="category-filters">
+        <a href="{% url 'projects' %}" class="category-filter {% if not selected_category %}active{% endif %} all">All Projects</a>
+        {% for category in project_categories %}
+          <a href="{% url 'projects' %}?category={{ category.slug }}" 
+             class="category-filter {% if selected_category == category.slug %}active{% endif %}">
+            {{ category.name }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
     <div class="project-grid">
       {% for project in projects %}
         <div class="project-card">
@@ -25,6 +38,12 @@
             <span><i class="uil uil-comment-alt-lines"></i> {{project.comments.count}} Comments</span> 
 
           </div>
+          <!-- Add this inside your project card, after the meta information -->
+{% if project.category %}
+  <div class="project-category">
+    <i class="uil uil-folder"></i> {{ project.category.name }}
+  </div>
+{% endif %}
           <div class="project-links">
             {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank">View Code</a>{% endif %}
             {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank">Live Site</a>{% endif %}
@@ -40,8 +59,8 @@
     
     <div class="pagination">
   {% if projects.has_previous %}
-    <a href="?page=1" class="button button--outline">&laquo; First</a>
-    <a href="?page={{ projects.previous_page_number }}" class="button button--outline">Previous</a>
+    <a href="?page=1{% if selected_category %}&category={{ selected_category }}{% endif %}" class="button button--outline">&laquo; First</a>
+    <a href="?page={{ projects.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="button button--outline">Previous</a>
   {% endif %}
 
   <span class="button disabled">
@@ -49,12 +68,9 @@
   </span>
 
   {% if projects.has_next %}
-    <a href="?page={{ projects.next_page_number }}" class="button button--outline">Next</a>
-    <a href="?page={{ projects.paginator.num_pages }}" class="button button--outline">Last &raquo;</a>
+    <a href="?page={{ projects.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="button button--outline">Next</a>
+    <a href="?page={{ projects.paginator.num_pages }}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="button button--outline">Last &raquo;</a>
   {% endif %}
 </div>
-
-
-  </div>
 </main>
 {% endblock %}

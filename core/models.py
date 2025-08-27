@@ -13,7 +13,6 @@ class Hero(models.Model):
     subtext_1 = RichTextUploadingField(blank=True, null=True)
     subtext_2 = RichTextUploadingField(blank=True, null=True)
     subtext_3 = RichTextUploadingField(blank=True, null=True)
-
     resume = models.FileField(upload_to="resumes/", blank=True, null=True)
     profile_image = models.ImageField(upload_to="hero/", default="ron.jpeg", blank=True, null=True)
 
@@ -28,17 +27,16 @@ class About(models.Model):
     description_1 = RichTextUploadingField(blank=True, null=True)
     description_2 = RichTextUploadingField(blank=True, null=True)
     description_3 = RichTextUploadingField(blank=True, null=True)
-
     tech_stack = RichTextUploadingField(
-        help_text="Enter tech stack details in plain text or HTML (e.g., <b>Frontend:</b> React, Tailwind)",
-        blank=True,
-        null=True
+    help_text="Enter tech stack details in plain text or HTML (e.g., <b>Frontend:</b> React, Tailwind)",
+    blank=True,
+    null=True
     )
-
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"About Section (Last updated: {self.updated_at.date()})"
+
 class SocialLink(models.Model):
     PLATFORM_CHOICES = [
         ("facebook", "Facebook"),
@@ -48,17 +46,63 @@ class SocialLink(models.Model):
         ("instagram", "Instagram"),
         ("youtube", "YouTube"),
     ]
-
     platform = models.CharField(max_length=50, choices=PLATFORM_CHOICES)
     url = models.URLField()
 
     def __str__(self):
         return f"{self.get_platform_display()} - {self.url}"
     
+
+# Add these to your models.py file
+
+class BlogCategory(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Blog Categories"
+        ordering = ['name']
+
+
+class ProjectCategory(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Project Categories"
+        ordering = ['name']
+
 class Project(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
     description = RichTextUploadingField()
+    category = models.ForeignKey(
+    ProjectCategory, 
+    on_delete=models.SET_NULL, 
+    null=True, 
+    blank=True,
+    related_name="projects"
+)
     image = models.ImageField(upload_to='projects/')
     technologies = models.TextField(help_text="Comma-separated list")
     repo_url = models.URLField(blank=True, null=True)
@@ -82,6 +126,13 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
     excerpt = models.TextField(blank=True, null=True)
+    category = models.ForeignKey(
+    BlogCategory, 
+    on_delete=models.SET_NULL, 
+    null=True, 
+    blank=True,
+    related_name="blog_posts"
+)
     content = RichTextUploadingField()
     image = models.ImageField(upload_to='blogs/')
     author = models.CharField(max_length=100, default="Ronny")
@@ -112,7 +163,9 @@ class Skill(models.Model):
     
     class Meta:
         ordering = ['-created_at']
-    
+
+
+
 class Comment(models.Model):
     name = models.CharField(max_length=100)
     content = models.TextField()

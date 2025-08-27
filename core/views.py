@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Project, BlogPost, Skill, Comment, SocialLink, About, Hero, Testimonial
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
@@ -8,6 +7,7 @@ from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from django.contrib import messages
+from .models import Project, BlogPost, Skill, Comment, SocialLink, About, Hero, Testimonial, BlogCategory, ProjectCategory
 
 # Create your views here.
 def home(request):
@@ -18,8 +18,11 @@ def home(request):
     blog = BlogPost.objects.order_by('-created_at')[:4]  
     skills = Skill.objects.all()
     testimonials = Testimonial.objects.all()
+    blog_categories = BlogCategory.objects.all()[:5]  # Show first 5
+    project_categories = ProjectCategory.objects.all()[:5]
 
-    return render(request, 'home.html', {"hero": hero, "about": about, "social_links": social_links, 'projects': projects,'blog_posts': blog, 'skills': skills, "testimonials": testimonials,
+    return render(request, 'home.html', {"hero": hero, "about": about, "social_links": social_links, 'projects': projects,'blog_posts': blog, 'skills': skills, "testimonials": testimonials, "blog_categories": blog_categories,
+    "project_categories": project_categories,
 })
 
 
@@ -55,10 +58,24 @@ class CustomLogoutView(LogoutView):
 
 def blog(request):
     posts = BlogPost.objects.order_by('-created_at')
+    
+    # Add category filtering
+    category_slug = request.GET.get('category')
+    if category_slug:
+        posts = posts.filter(category__slug=category_slug)
+    
     paginator = Paginator(posts, 4)  
     page_number = request.GET.get('page')
     blog_posts = paginator.get_page(page_number)
-    return render(request, "blog.html", {"blog_posts": blog_posts})
+    
+    # Get all categories for the filter
+    blog_categories = BlogCategory.objects.all()
+    
+    return render(request, "blog.html", {
+        "blog_posts": blog_posts,
+        "blog_categories": blog_categories,
+        "selected_category": category_slug
+    })
 
 def blog_detail(request, slug):
     blog = get_object_or_404(BlogPost, slug=slug)
@@ -88,10 +105,25 @@ def blog_detail(request, slug):
 
 def projects(request):
     project_list = Project.objects.order_by('-created_at')
+    
+    # Add category filtering
+    category_slug = request.GET.get('category')
+    if category_slug:
+        project_list = project_list.filter(category__slug=category_slug)
+    
     paginator = Paginator(project_list, 4) 
     page_number = request.GET.get('page')
     projects = paginator.get_page(page_number)
-    return render(request, "projects.html", {"projects": projects})
+    
+    # Get all categories for the filter
+    project_categories = ProjectCategory.objects.all()
+    
+    return render(request, "projects.html", {
+        "projects": projects,
+        "project_categories": project_categories,
+        "selected_category": category_slug
+    })
+
 
 def project_detail(request, slug):
     project = get_object_or_404(Project, slug=slug)

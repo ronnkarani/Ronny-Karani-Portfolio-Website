@@ -108,6 +108,19 @@
     <section class="section" id="projects">
       <div class="container">
         <h2 class="section-title">📚 Projects </h2>
+        <!-- Project Category Filters -->
+        <div class="category-search">
+          <h3>Filter by Category</h3>
+          <div class="category-filters">
+            <a href="{% url 'projects' %}" class="category-filter all">All Projects</a>
+            {% for category in project_categories %}
+              <a href="{% url 'projects' %}?category={{ category.slug }}" class="category-filter">{{ category.name }}</a>
+            {% endfor %}
+            {% if project_categories|length >= 5 %}
+              <a href="{% url 'projects' %}" class="category-filter">View All Categories</a>
+            {% endif %}
+          </div>
+        </div>
         <div class="project-grid">
           {% for project in projects %}
             <div class="project-card">
@@ -128,6 +141,12 @@
                 <span><i class="uil uil-comment-alt-lines"></i> {{project.comments.count}} Comments</span> 
 
               </div>
+              <!-- Add this inside your project card, after the meta information -->
+{% if project.category %}
+  <div class="project-category">
+    <i class="uil uil-folder"></i> {{ project.category.name }}
+  </div>
+{% endif %}
               <div class="project-links">
                 {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank">View Code</a>{% endif %}
                 {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank">View Project</a>{% endif %}
@@ -146,6 +165,19 @@
     <section class="section" id="blog">
       <div class="container">
         <h2 class="section-title">📝 Blog Posts </h2>
+        <!-- Blog Category Filters -->
+        <div class="category-search">
+          <h3>Filter by Category</h3>
+          <div class="category-filters">
+            <a href="{% url 'blog' %}" class="category-filter all">All Posts</a>
+            {% for category in blog_categories %}
+              <a href="{% url 'blog' %}?category={{ category.slug }}" class="category-filter">{{ category.name }}</a>
+            {% endfor %}
+            {% if blog_categories|length >= 5 %}
+              <a href="{% url 'blog' %}" class="category-filter">View All Categories</a>
+            {% endif %}
+          </div>
+        </div>
         <div class="blog-grid">
           {% for post in blog_posts %}
             <div class="blog-card">
@@ -165,6 +197,12 @@
                 <span class="like-count"><i class="uil uil-heart"></i> {{ post.likes }} Likes</span> 
                 <span><i class="uil uil-comment-alt-lines"></i> {{ post.comments.count }} Comments</h3></span>
               </div>
+              <!-- Add this inside your blog card, after the meta information -->
+{% if post.category %}
+  <div class="blog-category">
+    <i class="uil uil-folder"></i> {{ post.category.name }}
+  </div>
+{% endif %}
               <a href="{% url 'blog_detail' post.slug %}" target="_blank">Read More</a>
             </div>
           {% empty %}

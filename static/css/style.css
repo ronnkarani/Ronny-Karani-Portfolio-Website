@@ -70,6 +70,11 @@ h1 {
   color: inherit;
 }
 
+.nav__links .active {
+  color: #58a6ff;
+  font-weight: bold;
+}
+
 
 .nav__links {
   list-style: none;
@@ -145,6 +150,15 @@ h1 {
 
 .user-dropdown .dropdown-content a:hover {
   background-color: #3a3a3a;
+}
+
+.nav__links li a.active {
+  border-bottom: 2px solid #58a6ff;
+  padding-bottom: 2px;
+}
+
+button, a, .project-card, .blog-card {
+  transition: all 0.3s ease-in-out;
 }
 
 /* Active state triggered by click */
@@ -1045,6 +1059,7 @@ h1 {
 #scrollTopBtn:hover {
   background-color: rgb(3, 63, 88);;
 }
+
 .testimonial-container {
   max-width: 1200px;
   margin: auto;

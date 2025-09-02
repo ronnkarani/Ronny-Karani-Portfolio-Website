@@ -141,3 +141,22 @@ carousel.addEventListener('touchmove', (e) => {
   const walk = (x - startX) * 2;
   carousel.scrollLeft = scrollLeft - walk;
 });
+
+// tawk.js - Load Tawk.to live chat
+// Tawk.to Live Chat Loader
+(function () {
+    // Expose globals
+    window.Tawk_API = window.Tawk_API || {};
+    window.Tawk_LoadStart = new Date();
+
+    // Create Tawk.to script
+    var s1 = document.createElement("script");
+    s1.async = true;
+    s1.src = "https://embed.tawk.to/68b6fee08f89201927e8281f/1j45d77te";
+    s1.charset = "UTF-8";
+    s1.setAttribute("crossorigin", "*");
+
+    // Insert before first <script> tag
+    var s0 = document.getElementsByTagName("script")[0];
+    s0.parentNode.insertBefore(s1, s0);
+})();

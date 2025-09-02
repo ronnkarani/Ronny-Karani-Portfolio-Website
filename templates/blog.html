@@ -34,6 +34,12 @@
         <a href="{% url 'blog_detail' post.slug %}" class="blog-title-link" style="text-decoration: none;">
                 <h3>{{ post.title }}</h3>
               </a>
+              <!-- Add this inside your blog card, after the meta information -->
+{% if post.category %}
+  <div class="blog-category">
+    <i class="uil uil-folder"></i> {{ post.category.name }}
+  </div>
+{% endif %}
         <p>{{ post.excerpt|truncatewords:30|safe }}</p>
         <div class="blog-meta">
           <span><i class="uil uil-calendar-alt"></i> {{ post.created_at }}</span>
@@ -41,12 +47,7 @@
           <span class="like-count"><i class="uil uil-heart"></i> {{ post.likes }} Likes</span> 
           <span><i class="uil uil-comment-alt-lines"></i> {{ post.comments.count }} Comments</h3></span>
         </div>
-        <!-- Add this inside your blog card, after the meta information -->
-{% if post.category %}
-  <div class="blog-category">
-    <i class="uil uil-folder"></i> {{ post.category.name }}
-  </div>
-{% endif %}
+        
         <a href="{% url 'blog_detail' post.slug %}" class="read-more">Read More</a>
       </div>
       {% empty %}

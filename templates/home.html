@@ -25,20 +25,19 @@
             </div>
 
             <div class="home__socials">
-                  {% for link in social_links %}
-                    <a href="{{ link.url }}" target="_blank">
-                      <i class="uil uil-{{ link.platform }}"></i>
-                    </a>
-                  {% endfor %}
-                </div>
+              {% for link in social_links %}
+                <a href="{{ link.url }}" target="_blank">
+                  <i class="uil uil-{{ link.platform }}"></i>
+                </a>
+              {% endfor %}
+            </div>
           </div>
 
-    <div class="home__image">
-            
+          <div class="home__image">
             <picture>
-          <source srcset="{{ hero.profile_image|webp }}" type="image/webp">
-          <img src="{{ hero.profile_image.url }}" alt="{{ hero.name }}" loading="lazy" decoding="async" />
-        </picture>
+              <source srcset="{{ hero.profile_image|webp }}" type="image/webp">
+              <img src="{{ hero.profile_image.url }}" alt="{{ hero.name }}" loading="lazy" decoding="async" />
+            </picture>
           </div>
         </div>
       </div>
@@ -47,7 +46,8 @@
     <!-- 📂 About Section -->
     <section class="section" id="about">
       <div class="container">
-        <h2 class="section-title"> {{ about.title }} </h2>
+        <h2 class="section-title">💼 {{ about.title }}   </h2>
+        
         <div class="project-grid">
           <div class="project-card">
             <h3><em>{{ about.tagline|safe }}</em></h3>
@@ -57,7 +57,7 @@
           </div>
 
           <div class="project-card">
-            <h3><em>🛸 Tech Stack</em></h3>
+            <h3><em>🛸 My Tech Stack:</em></h3>
             <p>{{ about.tech_stack|safe }}</p>
             
           </div>
@@ -69,7 +69,8 @@
     <!-- 💼 Skills Section -->
     <section class="section" id="skills">
       <div class="container">
-        <h2 class="section-title">🎀 What I Do </h2>
+        <h2 class="section-title">🎀 What I Do
+        </h2>
         <div class="project-grid">
           {% for skill_group in skills %}
             <div class="project-card">
@@ -87,6 +88,11 @@
     <section class="stats-section">
       <div class="stats">
         <div class="stat">
+          <i class="uil uil-award"></i>
+          <h3>100%</h3>
+          <p>Satisfaction Guaranteed</p>
+        </div>
+        <div class="stat">
           <i class="uil uil-users-alt"></i>
           <h3>30+</h3>
           <p>Clients Served</p>
@@ -96,11 +102,7 @@
           <h3>40+</h3>
           <p>Projects Completed</p>
         </div>
-        <div class="stat">
-          <i class="uil uil-award"></i>
-          <h3>100%</h3>
-          <p>Satisfaction Guaranteed</p>
-        </div>
+        
       </div>
     </section>
 
@@ -124,16 +126,21 @@
         <div class="project-grid">
           {% for project in projects %}
             <div class="project-card">
-               <picture>
-            <source srcset="{{ project.image|webp }}" type="image/webp">
-            <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-detail-image" loading="lazy" decoding="async"/>
-          </picture>
+              <picture>
+                <source srcset="{{ project.image|webp }}" type="image/webp">
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-detail-image" loading="lazy" decoding="async"/>
+              </picture>
               <h3>
                 <a href="{% url 'project_details' project.slug %}" style="text-decoration: none;">
                 {{ project.title }}
               </a>
               </h3>
-              
+              <!-- Add this inside your project card, after the meta information -->
+              {% if project.category %}
+                <div class="project-category">
+                  <i class="uil uil-folder"></i> {{ project.category.name }}
+                </div>
+              {% endif %}
               <p>{{ project.description|truncatewords:30|safe }}</p>
               <div class="project-meta">
                 <span><i class="uil uil-eye"></i> {{ project.views }} Views</span> 
@@ -141,12 +148,7 @@
                 <span><i class="uil uil-comment-alt-lines"></i> {{project.comments.count}} Comments</span> 
 
               </div>
-              <!-- Add this inside your project card, after the meta information -->
-{% if project.category %}
-  <div class="project-category">
-    <i class="uil uil-folder"></i> {{ project.category.name }}
-  </div>
-{% endif %}
+              
               <div class="project-links">
                 {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank">View Code</a>{% endif %}
                 {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank">View Project</a>{% endif %}
@@ -189,7 +191,12 @@
                 <h3>{{ post.title }}</h3>
               </a>
 
-              
+              <!-- Add this inside your blog card, after the meta information -->
+              {% if post.category %}
+                <div class="blog-category">
+                  <i class="uil uil-folder"></i> {{ post.category.name }}
+                </div>
+              {% endif %}
               <p>{{ post.excerpt|truncatewords:30|safe }}</p>
               <div class="blog-meta">
                 <span><i class="uil uil-calendar-alt"></i> {{ post.created_at }}</span>
@@ -197,12 +204,7 @@
                 <span class="like-count"><i class="uil uil-heart"></i> {{ post.likes }} Likes</span> 
                 <span><i class="uil uil-comment-alt-lines"></i> {{ post.comments.count }} Comments</h3></span>
               </div>
-              <!-- Add this inside your blog card, after the meta information -->
-{% if post.category %}
-  <div class="blog-category">
-    <i class="uil uil-folder"></i> {{ post.category.name }}
-  </div>
-{% endif %}
+              
               <a href="{% url 'blog_detail' post.slug %}" target="_blank">Read More</a>
             </div>
           {% empty %}
@@ -215,7 +217,7 @@
     <!-- 🌟 Testimonial Section -->
     <section class="testimonials section" id="testimonials">
       <div class="testimonial-container">
-        <h2 class="section-title">💬 What Our Clients Say </h2>
+        <h2 class="section-title">💬 What My Clients Say </h2>
         <div class="testimonial-carousel">
           {% for testimonial in testimonials %}
           <div class="testimonial-card">

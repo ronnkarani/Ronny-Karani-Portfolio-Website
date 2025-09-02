@@ -9,6 +9,12 @@
   <div class="container">
     <h2 class="project-title">{{ project.title }}</h2>
     <div class="project-meta">
+      <!-- Add this inside your project card, after the meta information -->
+{% if project.category %}
+  <div class="project-category">
+    <i class="uil uil-folder"></i> {{ project.category.name }}
+  </div>
+{% endif %}
       <span><i class="uil uil-calendar-alt"></i> {{ project.created_at }}</span>
 
       <span><i class="uil uil-eye"></i> {{ project.views }} Views</span> 
@@ -24,7 +30,7 @@
       <span><i class="uil uil-comment-alt-lines"></i> {{project.comments.count}} Comments</span> 
 
     </div>
-
+    
     <picture>
       <source srcset="{{ project.image|webp }}" type="image/webp">
       <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-detail-image" loading="lazy" decoding="async">

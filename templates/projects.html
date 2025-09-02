@@ -31,6 +31,12 @@
           <h3><a href="{% url 'project_details' project.slug %}" style="text-decoration: none;">
             {{ project.title }}
           </a></h3>
+          <!-- Add this inside your project card, after the meta information -->
+{% if project.category %}
+  <div class="project-category">
+    <i class="uil uil-folder"></i> {{ project.category.name }}
+  </div>
+{% endif %}
           <p>{{ project.description|truncatewords:30|safe }}</p>
           <div class="project-meta">
             <span><i class="uil uil-eye"></i> {{ project.views }} Views</span> 
@@ -38,12 +44,7 @@
             <span><i class="uil uil-comment-alt-lines"></i> {{project.comments.count}} Comments</span> 
 
           </div>
-          <!-- Add this inside your project card, after the meta information -->
-{% if project.category %}
-  <div class="project-category">
-    <i class="uil uil-folder"></i> {{ project.category.name }}
-  </div>
-{% endif %}
+          
           <div class="project-links">
             {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank">View Code</a>{% endif %}
             {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank">Live Site</a>{% endif %}

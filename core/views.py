@@ -9,7 +9,8 @@ from django.contrib.auth.views import LogoutView
 from django.contrib import messages
 from .models import Project, BlogPost, Skill, Comment, SocialLink, About, Hero, Testimonial, BlogCategory, ProjectCategory
 
-# Create your views here.
+
+# Home page views here.
 def home(request):
     hero = Hero.objects.last()
     about = About.objects.last()
@@ -18,14 +19,14 @@ def home(request):
     blog = BlogPost.objects.order_by('-created_at')[:4]  
     skills = Skill.objects.all()
     testimonials = Testimonial.objects.all()
-    blog_categories = BlogCategory.objects.all()[:5]  # Show first 5
-    project_categories = ProjectCategory.objects.all()[:5]
+    blog_categories = BlogCategory.objects.all()
+    project_categories = ProjectCategory.objects.all()
 
     return render(request, 'home.html', {"hero": hero, "about": about, "social_links": social_links, 'projects': projects,'blog_posts': blog, 'skills': skills, "testimonials": testimonials, "blog_categories": blog_categories,
-    "project_categories": project_categories,
-})
+    "project_categories": project_categories,})
 
 
+# Sign Up page views here.
 def signup_view(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -33,12 +34,14 @@ def signup_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # log the user in immediately
+            login(request, user)
             return redirect('home')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
+
+# Login page views here.
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'
@@ -50,15 +53,17 @@ class CustomLoginView(LoginView):
         return super().dispatch(request, *args, **kwargs)
 
 
+
+# Logout page views here.
 class CustomLogoutView(LogoutView):
     # allow GET requests
     http_method_names = ['get', 'post']
     next_page = '/'  # redirect to home after logout
 
 
+# Blog page views here.
 def blog(request):
     posts = BlogPost.objects.order_by('-created_at')
-    
     # Add category filtering
     category_slug = request.GET.get('category')
     if category_slug:
@@ -74,9 +79,9 @@ def blog(request):
     return render(request, "blog.html", {
         "blog_posts": blog_posts,
         "blog_categories": blog_categories,
-        "selected_category": category_slug
-    })
+        "selected_category": category_slug})
 
+# Single Blog Post page views here.
 def blog_detail(request, slug):
     blog = get_object_or_404(BlogPost, slug=slug)
     # --- increment views once per session (prevents refresh spamming)
@@ -102,7 +107,7 @@ def blog_detail(request, slug):
     comments = blog.comments.order_by('-created_at') if hasattr(blog, 'comments') else []
     return render(request, 'blog_details.html', {'blog': blog, 'comments': comments})
 
-
+# Project page views here.
 def projects(request):
     project_list = Project.objects.order_by('-created_at')
     
@@ -121,10 +126,9 @@ def projects(request):
     return render(request, "projects.html", {
         "projects": projects,
         "project_categories": project_categories,
-        "selected_category": category_slug
-    })
+        "selected_category": category_slug})
 
-
+# Single Project page views here.
 def project_detail(request, slug):
     project = get_object_or_404(Project, slug=slug)
     # --- increment views once per session
@@ -150,12 +154,13 @@ def project_detail(request, slug):
     comments = project.comments.order_by('-created_at') if hasattr(project, 'comments') else []
     return render(request, 'project_details.html', {'project': project, 'comments': comments})
 
-
+# Contact page views here.
 def contact(request):
     social_links = SocialLink.objects.all()
 
     return render(request, "contact.html", {"social_links": social_links,})
 
+# Send Message via gmail SMTP views here.
 def send_message(request):
     if request.method == "POST":
         name = request.POST.get("name")

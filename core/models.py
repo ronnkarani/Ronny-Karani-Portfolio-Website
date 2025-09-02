@@ -4,7 +4,8 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.text import Truncator
 from django.utils import timezone
 
-# Create your models here.
+
+# Hero Section models here.
 class Hero(models.Model):
     greeting = models.CharField(max_length=255, default="Hi 👋, I'm")
     name = models.CharField(max_length=255, default="Ronny Karani")
@@ -21,9 +22,11 @@ class Hero(models.Model):
     def __str__(self):
         return f"Hero Section ({self.name})"
 
+
+# About Models
 class About(models.Model):
     title = models.CharField(max_length=255, default="📂 About Me ")
-    tagline = RichTextUploadingField(max_length=255, blank=True, null=True)  # “Creative Developer • Tech Visionary”
+    tagline = RichTextUploadingField(max_length=255, blank=True, null=True)  
     description_1 = RichTextUploadingField(blank=True, null=True)
     description_2 = RichTextUploadingField(blank=True, null=True)
     description_3 = RichTextUploadingField(blank=True, null=True)
@@ -37,6 +40,8 @@ class About(models.Model):
     def __str__(self):
         return f"About Section (Last updated: {self.updated_at.date()})"
 
+
+# Social Link Models
 class SocialLink(models.Model):
     PLATFORM_CHOICES = [
         ("facebook", "Facebook"),
@@ -45,16 +50,17 @@ class SocialLink(models.Model):
         ("github", "GitHub"),
         ("instagram", "Instagram"),
         ("youtube", "YouTube"),
+        ("whatsapp", "Whatsapp"),
+        ("telegram", "Telegram"),
     ]
     platform = models.CharField(max_length=50, choices=PLATFORM_CHOICES)
     url = models.URLField()
 
     def __str__(self):
         return f"{self.get_platform_display()} - {self.url}"
-    
 
-# Add these to your models.py file
 
+# Blog Category Models
 class BlogCategory(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, blank=True)
@@ -74,6 +80,7 @@ class BlogCategory(models.Model):
         ordering = ['name']
 
 
+# Project Category Models
 class ProjectCategory(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, blank=True)
@@ -92,17 +99,14 @@ class ProjectCategory(models.Model):
         verbose_name_plural = "Project Categories"
         ordering = ['name']
 
+
+# Project Models
 class Project(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
     description = RichTextUploadingField()
-    category = models.ForeignKey(
-    ProjectCategory, 
-    on_delete=models.SET_NULL, 
-    null=True, 
-    blank=True,
-    related_name="projects"
-)
+    category = models.ForeignKey(ProjectCategory, on_delete=models.SET_NULL,null=True, blank=True,
+    related_name="projects")
     image = models.ImageField(upload_to='projects/')
     technologies = models.TextField(help_text="Comma-separated list")
     repo_url = models.URLField(blank=True, null=True)
@@ -122,6 +126,8 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+
+# Blog Models
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
@@ -152,6 +158,8 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title
 
+
+# Skill Models
 class Skill(models.Model):
     icon = models.CharField(max_length=10, help_text="Emoji or Icon")
     category = models.CharField(max_length=100, help_text="Category e.g. Frontend")
@@ -165,12 +173,11 @@ class Skill(models.Model):
         ordering = ['-created_at']
 
 
-
+# Comment Models
 class Comment(models.Model):
     name = models.CharField(max_length=100)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-
     # This will work for either a project or blog
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True, related_name="comments")
     blog = models.ForeignKey(BlogPost, on_delete=models.CASCADE, null=True, blank=True, related_name="comments")
@@ -179,6 +186,7 @@ class Comment(models.Model):
         return f"Comment by {self.name}"
 
 
+# Testimonial Models
 class Testimonial(models.Model):
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=100, blank=True, null=True)  # e.g., "CEO, Company"

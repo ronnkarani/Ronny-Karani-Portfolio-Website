@@ -293,6 +293,13 @@ button, a, .project-card, .blog-card {
   padding: 2rem;
 }
 
+.home__content {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  text-align: center;
+}
+
 @media (max-width: 1024px) {
   .home__content {
     flex-direction: column;
@@ -322,18 +329,24 @@ button, a, .project-card, .blog-card {
   }
 }
 
-.home__content {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  text-align: center;
-}
+
 
 @media (min-width: 768px) {
   .home__content {
-    flex-direction: row;
+    flex-direction: column;
+    text-align: center;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+  }
+  /* Image first */
+  .home__image {
+    order: -1; /* put image before text */
+    margin-bottom: 1.5rem; /* some spacing below the image */
+  }
+  
+  /* Text comes after image */
+  .home__text {
+    order: 0;
   }
 }
 

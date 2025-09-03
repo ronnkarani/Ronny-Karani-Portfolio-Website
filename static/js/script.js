@@ -149,14 +149,14 @@ carousel.addEventListener('touchmove', (e) => {
     window.Tawk_API = window.Tawk_API || {};
     window.Tawk_LoadStart = new Date();
 
-    // Create Tawk.to script
+    // Create Tawk.to script element
     var s1 = document.createElement("script");
     s1.async = true;
-    s1.src = "https://embed.tawk.to/68b6fee08f89201927e8281f/1j45d77te";
+    s1.src = "https://embed.tawk.to/68b6fee08f89201927e8281f/1j45d77te"; 
     s1.charset = "UTF-8";
     s1.setAttribute("crossorigin", "*");
 
-    // Insert before first <script> tag
+    // Insert script before the first <script> tag in the document
     var s0 = document.getElementsByTagName("script")[0];
     s0.parentNode.insertBefore(s1, s0);
 })();

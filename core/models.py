@@ -3,6 +3,7 @@ from django.utils.text import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.text import Truncator
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 # Hero Section models here.
@@ -188,16 +189,18 @@ class Comment(models.Model):
 
 # Testimonial Models
 class Testimonial(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=100, blank=True, null=True)  # e.g., "CEO, Company"
     message = RichTextUploadingField()
     image = models.ImageField(upload_to='testimonials/', blank=True, null=True)
     rating = models.PositiveSmallIntegerField(default=5)  # ⭐ new field
+    approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.name} - {self.role}"
+        return f"{self.name} ({'Approved' if self.approved else 'Pending'})"
 

@@ -15,4 +15,5 @@ urlpatterns = [
     path("send-message/", views.send_message, name="send_message"),
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
     path('projects/<slug:slug>/', views.project_detail, name='project_details'),
+    path('add-testimonial/', views.add_testimonial, name='add_testimonial'),
 ]

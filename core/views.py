@@ -9,6 +9,8 @@ from django.contrib.auth.views import LogoutView
 from django.contrib import messages
 from .models import Project, BlogPost, Skill, Comment, SocialLink, About, Hero, Testimonial, BlogCategory, ProjectCategory
 from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
+from .forms import TestimonialForm
 
 
 # Home page views here.
@@ -19,11 +21,12 @@ def home(request):
     projects = Project.objects.order_by('-created_at')[:4] 
     blog = BlogPost.objects.order_by('-created_at')[:4]  
     skills = Skill.objects.all()
-    testimonials = Testimonial.objects.all()
+    form = TestimonialForm()
+    testimonials = Testimonial.objects.all().filter(approved=True)
     blog_categories = BlogCategory.objects.all()
     project_categories = ProjectCategory.objects.all()
 
-    return render(request, 'home.html', {"hero": hero, "about": about, "social_links": social_links, 'projects': projects,'blog_posts': blog, 'skills': skills, "testimonials": testimonials, "blog_categories": blog_categories,
+    return render(request, 'home.html', {"hero": hero, "about": about, "social_links": social_links, 'projects': projects,'blog_posts': blog, 'skills': skills,  "form": form, "testimonials": testimonials, "blog_categories": blog_categories,
     "project_categories": project_categories,})
 
 
@@ -194,3 +197,28 @@ def send_message(request):
             messages.error(request, "❌ Oops! Something went wrong. Please try again later.")
 
         return redirect("contact")
+
+@login_required
+def add_testimonial(request):
+    if hasattr(request.user, 'testimonial'):
+        messages.warning(request, "You have already submitted a testimonial.")
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = TestimonialForm(request.POST, request.FILES)
+        if form.is_valid():
+            testimonial = form.save(commit=False)
+            testimonial.user = request.user
+
+            # Handle default image
+            if form.cleaned_data['use_default_image']:
+                testimonial.image = 'images/default_testimonial.png'  # your static default image path
+
+            testimonial.is_approved = False  # must be approved by admin
+            testimonial.save()
+            messages.success(request, "Your testimonial has been submitted and is awaiting approval.")
+            return redirect('home')
+    else:
+        form = TestimonialForm()
+
+    return render(request, 'add_testimonial.html', {'form': form})

@@ -42,8 +42,9 @@ class BlogPostAdmin(admin.ModelAdmin):
 
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
-    list_display = ('name', 'role', 'created_at')
-    search_fields = ('name', 'role')
+    list_display = ('name', 'role', 'rating', 'approved', 'created_at')
+    list_filter = ('approved',)
+    search_fields = ('name', 'message')
 
 admin.site.register(Skill)
 

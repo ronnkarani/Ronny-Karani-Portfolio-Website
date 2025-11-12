@@ -189,3 +189,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+document.addEventListener("DOMContentLoaded", function() {
+  const addBtn = document.getElementById("addTestimonialBtn");
+  const formDiv = document.getElementById("testimonialForm");
+
+  if (addBtn && formDiv) {
+    addBtn.addEventListener("click", () => {
+      formDiv.classList.toggle("hidden");
+    });
+  }
+});

@@ -8,6 +8,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import LogoutView
 from django.contrib import messages
 from .models import Project, BlogPost, Skill, Comment, SocialLink, About, Hero, Testimonial, BlogCategory, ProjectCategory
+from django.contrib.auth import login as auth_login
 
 
 # Home page views here.
@@ -35,16 +36,26 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, f"🎉 Welcome {user.username}! Your account has been created successfully.")
             return redirect('home')
+        else:
+            messages.error(request, "⚠️ There was an error creating your account. Please check the details and try again.")
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
 
 # Login page views here.
-
 class CustomLoginView(LoginView):
     template_name = 'login.html'
+
+    def form_valid(self, form):
+        messages.success(self.request, f"✅ Welcome back, {form.get_user().username}!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "❌ Invalid username or password. Please try again.")
+        return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
         # ✅ Add this at the very top of dispatch

@@ -142,21 +142,50 @@ carousel.addEventListener('touchmove', (e) => {
   carousel.scrollLeft = scrollLeft - walk;
 });
 
-// tawk.js - Load Tawk.to live chat
-// Tawk.to Live Chat Loader
-(function () {
-    // Expose globals
-    window.Tawk_API = window.Tawk_API || {};
-    window.Tawk_LoadStart = new Date();
+// password_strength.js
+document.addEventListener("DOMContentLoaded", () => {
+  const passwordInput = document.querySelector("#id_password1");
+  const strengthBar = document.querySelector("#passwordStrength");
+  const rules = {
+    length: document.getElementById("rule-length"),
+    upper: document.getElementById("rule-upper"),
+    lower: document.getElementById("rule-lower"),
+    number: document.getElementById("rule-number"),
+    symbol: document.getElementById("rule-symbol"),
+  };
 
-    // Create Tawk.to script element
-    var s1 = document.createElement("script");
-    s1.async = true;
-    s1.src = "https://embed.tawk.to/68b6fee08f89201927e8281f/1j45d77te"; 
-    s1.charset = "UTF-8";
-    s1.setAttribute("crossorigin", "*");
+  if (!passwordInput || !strengthBar) return;
 
-    // Insert script before the first <script> tag in the document
-    var s0 = document.getElementsByTagName("script")[0];
-    s0.parentNode.insertBefore(s1, s0);
-})();
+  passwordInput.addEventListener("input", () => {
+    const value = passwordInput.value;
+    const conditions = {
+      length: value.length >= 8,
+      upper: /[A-Z]/.test(value),
+      lower: /[a-z]/.test(value),
+      number: /\d/.test(value),
+      symbol: /[^A-Za-z0-9]/.test(value),
+    };
+
+    // Update visual states
+    Object.keys(conditions).forEach((key) =>
+      rules[key].classList.toggle("valid", conditions[key])
+    );
+
+    // Compute strength
+    const strength = Object.values(conditions).filter(Boolean).length * 20;
+    strengthBar.value = strength;
+
+    // Color transitions
+    const colorMap = [
+      { max: 20, color: "#ff4d4d", glow: "rgba(255,77,77,0.8)" },
+      { max: 40, color: "#ffa64d", glow: "rgba(255,166,77,0.8)" },
+      { max: 60, color: "#2f82ff", glow: "rgba(47,130,255,0.8)" },
+      { max: 100, color: "#00d97e", glow: "rgba(0,217,126,0.8)" },
+    ];
+    const { color, glow } = colorMap.find((c) => strength <= c.max);
+
+    strengthBar.style.setProperty("--bar-color", color);
+    strengthBar.style.setProperty("--bar-glow", glow);
+  });
+});
+

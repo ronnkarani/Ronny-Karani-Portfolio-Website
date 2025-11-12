@@ -276,6 +276,189 @@ button, a, .project-card, .blog-card {
   color: #8a0000;
   border: 1px solid #f5b7b7;
 }
+/* === MESSAGE ANIMATIONS === */
+.alert {
+  animation: fadeIn 0.6s ease, fadeOut 0.5s ease 5s forwards; /* fade out after 5s */
+  position: relative;
+  transition: opacity 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-10px); }
+}
+
+/* === AUTH CONTAINER === */
+.auth-container {
+  background: #0e0e0e;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  max-width: 420px;
+  margin: 40px auto;
+}
+
+.auth-container h2 {
+  color: #5da9ff;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* === INPUT FIELDS === */
+.auth-container input[type="text"],
+.auth-container input[type="password"],
+.auth-container input[type="email"] {
+  width: 100%;
+  padding: 10px 12px;
+  background: #000;
+  border: 1px solid #1e1e1e;
+  color: #e6e6e6;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-container input:focus {
+  border-color: #5da9ff;
+  box-shadow: 0 0 6px rgba(93, 169, 255, 0.6);
+  outline: none;
+}
+
+/* === HELP TEXT (username/password hints) === */
+.helptext {
+  font-size: 0.85rem;
+  color: #a8b3c1;
+  margin-top: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 10px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+/* === PASSWORD RULES === */
+#passwordRules {
+  list-style: none;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+}
+
+#passwordRules li {
+  color: #b5c2d1;
+  font-size: 0.9rem;
+  padding-left: 24px;
+  margin-bottom: 8px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+#passwordRules li::before {
+  content: "⚡";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #5da9ff;
+  font-size: 0.8rem;
+  text-shadow: 0 0 8px rgba(93, 169, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+/* === VALIDATED RULE (turns green) === */
+#passwordRules li.valid {
+  color: #00d97e;
+  text-shadow: 0 0 6px rgba(0, 217, 126, 0.7);
+}
+#passwordRules li.valid::before {
+  content: "✔";
+  color: #00d97e;
+  text-shadow: 0 0 8px rgba(0, 217, 126, 0.9);
+}
+
+/* === PASSWORD STRENGTH BAR === */
+progress {
+  --bar-color: #2f82ff;
+  --bar-glow: rgba(47, 130, 255, 0.8);
+  width: 100%;
+  height: 6px;
+  border-radius: 10px;
+  appearance: none;
+  margin-top: 10px;
+  transition: all 0.4s ease;
+}
+
+progress::-webkit-progress-bar {
+  background: #1b1b1b;
+  border-radius: 10px;
+}
+progress::-webkit-progress-value {
+  background: var(--bar-color);
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--bar-glow);
+  transition: all 0.4s ease;
+}
+progress::-moz-progress-bar {
+  background: var(--bar-color);
+  border-radius: 10px;
+}
+
+/* === ERROR MESSAGES === */
+.errorlist {
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  color: #ff8c8c;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+/* === BUTTON === */
+.auth-container button {
+  width: 100%;
+  margin-top: 15px;
+  background: linear-gradient(90deg, #2f82ff, #00d4ff);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-container button:hover {
+  box-shadow: 0 0 12px rgba(47, 130, 255, 0.7);
+  transform: scale(1.02);
+}
+
+/* === SIGN-IN LINK === */
+.auth-container p {
+  text-align: center;
+  margin-top: 12px;
+  color: #c9d4e0;
+}
+
+.auth-container a {
+  color: #5da9ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
 
 
 /* Hero Section */

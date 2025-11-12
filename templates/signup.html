@@ -1,15 +1,35 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}💻 Sign Up{% endblock %}
+{% block title %}📝 Sign Up{% endblock %}
 {% block content %}
 
-    <div class="auth-container">
-    <h2>Sign Up</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
-    </div>
+<div class="auth-container">
+  <h2>Sign Up</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.username.label_tag }} {{ form.username }}
+    <small class="helptext">{{ form.username.help_text }}</small>
+
+    {{ form.password1.label_tag }} {{ form.password1 }}
+
+    <!-- ✅ Dynamic password rules -->
+    <ul id="passwordRules">
+      <li id="rule-length">At least 8 characters</li>
+      <li id="rule-upper">At least one uppercase letter</li>
+      <li id="rule-lower">At least one lowercase letter</li>
+      <li id="rule-number">At least one number</li>
+      <li id="rule-symbol">At least one special symbol</li>
+    </ul>
+
+    <!-- ✅ Password strength bar -->
+    <progress id="passwordStrength" max="100" value="0"></progress>
+
+    {{ form.password2.label_tag }} {{ form.password2 }}
+    <small class="helptext">{{ form.password2.help_text }}</small>
+
+    <button type="submit">Sign Up</button>
+  </form>
+  <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+
 {% endblock %}

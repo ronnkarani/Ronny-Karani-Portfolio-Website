@@ -14,21 +14,52 @@ from .forms import TestimonialForm
 from django.conf import settings
 import os
 
-# Home page views here.
+def get_unapproved_testimonial_count(request):
+    """Return number of unapproved testimonials (for admin only)."""
+    if request.user.is_authenticated and request.user.is_superuser:
+        return Testimonial.objects.filter(approved=False).count()
+    return 0
+
+
 def home(request):
     hero = Hero.objects.last()
     about = About.objects.last()
     social_links = SocialLink.objects.all()
-    projects = Project.objects.order_by('-created_at')[:4] 
-    blog = BlogPost.objects.order_by('-created_at')[:4]  
+    projects = Project.objects.order_by('-created_at')[:4]
+    blog = BlogPost.objects.order_by('-created_at')[:4]
     skills = Skill.objects.all()
-    form = TestimonialForm()
-    testimonials = Testimonial.objects.all().filter(approved=True)
+    testimonials = Testimonial.objects.filter(approved=True)
     blog_categories = BlogCategory.objects.all()
     project_categories = ProjectCategory.objects.all()
 
-    return render(request, 'home.html', {"hero": hero, "about": about, "social_links": social_links, 'projects': projects,'blog_posts': blog, 'skills': skills,  "form": form, "testimonials": testimonials, "blog_categories": blog_categories,
-    "project_categories": project_categories,})
+    form = None
+    user_has_testimonial = False
+
+    if request.user.is_authenticated:
+        user_has_testimonial = Testimonial.objects.filter(user=request.user).exists()
+        if not user_has_testimonial:
+            form = TestimonialForm()
+
+    unapproved_count = get_unapproved_testimonial_count(request)
+
+    return render(
+        request,
+        'home.html',
+        {
+            "hero": hero,
+            "about": about,
+            "social_links": social_links,
+            "projects": projects,
+            "blog_posts": blog,
+            "skills": skills,
+            "form": form,
+            "testimonials": testimonials,
+            "blog_categories": blog_categories,
+            "project_categories": project_categories,
+            "user_has_testimonial": user_has_testimonial,
+            "unapproved_count": unapproved_count,
+        },
+    )
 
 
 # Sign Up page views here.
@@ -198,10 +229,9 @@ def send_message(request):
             messages.error(request, "❌ Oops! Something went wrong. Please try again later.")
 
         return redirect("contact")
-
 @login_required
 def add_testimonial(request):
-    if hasattr(request.user, 'testimonial'):
+    if Testimonial.objects.filter(user=request.user).exists():
         messages.warning(request, "You have already submitted a testimonial.")
         return redirect('home')
 
@@ -212,9 +242,10 @@ def add_testimonial(request):
             testimonial.user = request.user
             testimonial.approved = False
             testimonial.save()
-            messages.success(request, "Your testimonial has been submitted and is awaiting approval.")
+            messages.success(request, "✅ Your testimonial has been submitted and is awaiting approval.")
             return redirect('home')
     else:
         form = TestimonialForm()
 
     return render(request, 'add_testimonial.html', {'form': form})
+

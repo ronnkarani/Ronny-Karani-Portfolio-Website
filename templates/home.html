@@ -223,11 +223,29 @@
         <!-- ✨ Add Testimonial Button -->
 <div class="add-testimonial-container" style="text-align:center; margin-bottom: 1.5rem;">
   {% if user.is_authenticated %}
-    <button id="addTestimonialBtn" class="button button--outline">Add Testimonial</button>
+    {% if not user.is_superuser %}
+      {% if not user_has_testimonial %}
+        <button id="addTestimonialBtn" class="button button--outline">Add Testimonial</button>
+      {% else %}
+        <p style="color: #00c853;"><b>✅ You’ve already added your testimonial.</b></p>
+      {% endif %}
+    {% endif %}
   {% else %}
     <a href="{% url 'signup' %}" class="button button--outline">Sign Up to Add Testimonial</a>
   {% endif %}
 </div>
+
+
+{% if not user_has_testimonial and user.is_authenticated %}
+<div id="testimonialForm" class="testimonial-form hidden">
+  <form action="{% url 'add_testimonial' %}" method="POST" enctype="multipart/form-data" class="auth-container" style="max-width:500px;margin:auto;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="button">Submit Testimonial</button>
+  </form>
+</div>
+{% endif %}
+
 
 <!-- 🔽 Hidden Form -->
 <div id="testimonialForm" class="testimonial-form hidden">

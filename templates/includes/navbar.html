@@ -17,6 +17,17 @@
 
     <!-- User dropdown -->
     <div class="nav__icons">
+      {% if request.user.is_superuser %}
+  <div class="message-icon">
+    <a href="{% url 'admin:core_testimonial_changelist' %}">
+      <i class="uil uil-comment-dots" title="Pending Testimonials"></i>
+      {% if unapproved_count > 0 %}
+        <span class="badge">{{ unapproved_count }}</span>
+      {% endif %}
+    </a>
+  </div>
+{% endif %}
+
       <div class="user-dropdown">
         <i class="uil uil-user login-icon" title="Account"></i>
         <i class="uil uil-angle-down dropdown-arrow"></i>

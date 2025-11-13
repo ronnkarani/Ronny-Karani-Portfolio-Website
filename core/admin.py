@@ -1,3 +1,4 @@
+# This code snippet is setting up Django admin configurations for various models in a Django project.
 from django.contrib import admin
 from .models import Project, BlogPost, SocialLink, Skill, About, Hero, Testimonial, BlogCategory, ProjectCategory
 

@@ -11,7 +11,8 @@ from .models import Project, BlogPost, Skill, Comment, SocialLink, About, Hero, 
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from .forms import TestimonialForm
-
+from django.conf import settings
+import os
 
 # Home page views here.
 def home(request):
@@ -209,12 +210,7 @@ def add_testimonial(request):
         if form.is_valid():
             testimonial = form.save(commit=False)
             testimonial.user = request.user
-
-            # Handle default image
-            if form.cleaned_data['use_default_image']:
-                testimonial.image = 'images/default_testimonial.png'  # your static default image path
-
-            testimonial.is_approved = False  # must be approved by admin
+            testimonial.approved = False
             testimonial.save()
             messages.success(request, "Your testimonial has been submitted and is awaiting approval.")
             return redirect('home')

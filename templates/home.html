@@ -252,27 +252,30 @@
               </div>
 
               <!-- Right side: image + stars -->
-              {% if testimonial.image %}
+              
               <div class="testimonial-img">
-                <picture>
-                  <source srcset="{{ testimonial.image|webp }}" type="image/webp">
-                  <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" loading="lazy" decoding="async">
-                </picture>
-                
+                <!--{% if testimonial.image %}
+                  <picture>
+                    {% with image_url=testimonial.image.url|default:testimonial.image %}
+                      <source srcset="{{ image_url|webp }}" type="image/webp">
+                      <img src="{{ image_url }}" alt="{{ testimonial.name }}" loading="lazy" decoding="async">
+                    {% endwith %}
+                  </picture>
+                {% endif %}-->
+
                 <div class="testimonial-stars">
                   {% with ''|center:5 as range %}
                     {% for _ in range %}
                       {% if forloop.counter <= testimonial.rating %}
-                        <i class="fas fa-star text-yellow-500"></i> <!-- filled star -->
+                        <i class="fas fa-star text-yellow-500"></i>
                       {% else %}
-                        <i class="far fa-star text-yellow-500"></i> <!-- outline star -->
+                        <i class="far fa-star text-yellow-500"></i>
                       {% endif %}
                     {% endfor %}
                   {% endwith %}
                 </div>
-
               </div>
-              {% endif %}
+
             </div>
           </div>
           {% endfor %}

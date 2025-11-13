@@ -272,14 +272,11 @@
               <!-- Right side: image + stars -->
               
               <div class="testimonial-img">
-                <!--{% if testimonial.image %}
-                  <picture>
-                    {% with image_url=testimonial.image.url|default:testimonial.image %}
-                      <source srcset="{{ image_url|webp }}" type="image/webp">
-                      <img src="{{ image_url }}" alt="{{ testimonial.name }}" loading="lazy" decoding="async">
-                    {% endwith %}
-                  </picture>
-                {% endif %}-->
+                {% if testimonial.image %}
+                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="testimonial-img" loading="lazy">
+                {% else %}
+                    <img src="{% static 'images/default-user.png' %}" alt="Default" class="testimonial-img">
+                {% endif %}
 
                 <div class="testimonial-stars">
                   {% with ''|center:5 as range %}

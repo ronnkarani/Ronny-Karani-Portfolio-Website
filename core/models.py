@@ -194,6 +194,8 @@ class Testimonial(models.Model):
     role = models.CharField(max_length=100, blank=True, null=True)  # e.g., "CEO, Company"
     message = RichTextUploadingField()
     rating = models.PositiveSmallIntegerField(default=5)  # ⭐ new field
+    image = models.ImageField(upload_to="testimonials/", blank=True, null=True)  # ✅ new field
+    approved = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

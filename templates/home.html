@@ -199,7 +199,7 @@
           {% for post in blog_posts %}
             <div class="blog-card">
               <picture>
-                <source srcset="{{ blog.image|webp }}" type="image/webp">
+                <source srcset="{{ post.image|webp }}" type="image/webp">
                 <img src="{{ post.image.url }}" alt="{{ post.title }}" class="blog-image" loading="lazy" decoding="async">
               </picture>
               <a href="{% url 'blog_detail' post.slug %}" class="blog-title-link" style="text-decoration: none;">

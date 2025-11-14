@@ -1019,59 +1019,103 @@ progress::-moz-progress-bar {
   transform: scale(1.05);
 }
 
+/* ============================
+   🔍 LIVE SEARCH — IMPROVED UI 
+   ============================ */
 .search-container {
   position: relative;
   display: flex;
   align-items: center;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
+  width: 100%;
+  max-width: 600px;
 }
 
 .search-container input {
   flex: 1;
-  padding: 0.6rem 1rem;
-  border-radius: 0.5rem 0 0 0.5rem;
-  border: 1px solid #ccc;
+  padding: 0.75rem 1rem;
+  border-radius: 0.6rem 0 0 0.6rem;
+  border: 1px solid #cfcfcf;
   outline: none;
   font-size: 1rem;
+  background: #fafafa;
+  transition: all 0.25s ease;
+}
+
+.search-container input:focus {
+  border-color: #58a6ff;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(88, 166, 255, 0.4);
 }
 
 .search-container button {
-  padding: 0.6rem 1rem;
-  background-color: #58a6ff; /* theme color */
+  padding: 0.75rem 1.2rem;
+  background-color: #58a6ff;
   color: #fff;
   border: none;
-  border-radius: 0 0.5rem 0.5rem 0;
+  font-weight: 600;
+  border-radius: 0 0.6rem 0.6rem 0;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .search-container button:hover {
   background-color: #0c62c5;
 }
 
+.search-container button:active {
+  transform: scale(0.95);
+}
+
+/* ============================
+   📥 SEARCH RESULTS DROPDOWN
+   ============================ */
 .search-results {
   position: absolute;
-  top: 100%;
+  top: 105%;
   left: 0;
   right: 0;
-  background: #868686;
+  background: #fff;
+  border-radius: 0 0 0.6rem 0.6rem;
   border: 1px solid #ccc;
   border-top: none;
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
-  z-index: 10;
+  z-index: 50;
   list-style: none;
   padding: 0;
   margin: 0;
+
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  animation: dropdownFade 0.2s ease-out;
+}
+
+@keyframes dropdownFade {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .search-results li {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid #ececec;
+}
+
+.search-results li:last-child {
+  border-bottom: none;
 }
 
 .search-results li:hover {
-  background-color: #a9eeff;
+  background-color: #e8f4ff;
+}
+
+.search-results .no-results {
+  text-align: center;
+  padding: 1rem;
+  font-style: italic;
+  color: #999;
 }
 
 /* Contact Section */

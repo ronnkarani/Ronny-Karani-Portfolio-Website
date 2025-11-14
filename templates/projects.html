@@ -5,6 +5,7 @@
 {% block title %}👨‍💻 Projects {% endblock %}
 
 {% block content %}
+
 <main class="section projects-page">
   <div class="container">
     <h2 class="section-title">📚 All Projects </h2>
@@ -22,12 +23,12 @@
       </div>
     </div>
     <!-- Projects Search -->
-    <div class="search-container">
-      <input type="text" id="projectPageSearch" placeholder="Search Projects..." autocomplete="off">
-      <button id="projectPageSearchBtn">Search</button>
-      <ul id="projectPageSearchResults" class="search-results"></ul>
-    </div>
-    <div class="project-grid">
+<div class="search-container">
+    <input type="text" id="projectSearch" placeholder="Search Projects..." autocomplete="off">
+    <button id="projectSearchBtn">Search</button>
+    <ul id="projectSearchResults" class="search-results"></ul>
+</div>
+<div class="project-grid">
       {% for project in projects %}
         <div class="project-card">
           <picture>

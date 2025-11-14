@@ -5,6 +5,7 @@
 {% block title %}👨‍💻 Blog {% endblock %}
 
 {% block content %}
+
 <!-- 📝 Blog Section -->
 <section class="section blog-page" id="blog">
   <div class="container">
@@ -23,11 +24,12 @@
       </div>
     </div>
     <!-- Blog Search -->
-    <div class="search-container">
-      <input type="text" id="blogPageSearch" placeholder="Search Blog Posts..." autocomplete="off">
-      <button id="blogPageSearchBtn">Search</button>
-      <ul id="blogPageSearchResults" class="search-results"></ul>
-    </div>
+<div class="search-container">
+    <input type="text" id="blogSearch" placeholder="Search Blog Posts..." autocomplete="off">
+    <button id="blogSearchBtn">Search</button>
+    <ul id="blogSearchResults" class="search-results"></ul>
+</div>
+
 
     <div class="blog-grid">
       {% for post in blog_posts %}

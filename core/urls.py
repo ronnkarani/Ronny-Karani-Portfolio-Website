@@ -5,6 +5,8 @@ from .views import signup_view, CustomLoginView
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
+    path('api/search/blog/', views.blog_search_api, name='blog_search_api'),
+    path('api/search/project/', views.project_search_api, name='project_search_api'),
     path('', views.home, name='home'),
     path('signup/', signup_view, name='signup'),
     path('login/', CustomLoginView.as_view(next_page='home'), name='login'),
@@ -16,6 +18,5 @@ urlpatterns = [
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
     path('projects/<slug:slug>/', views.project_detail, name='project_details'),
     path('add-testimonial/', views.add_testimonial, name='add_testimonial'),
-    path('api/search/blog/', views.blog_search_api, name='blog_search_api'),
-    path('api/search/project/', views.project_search_api, name='project_search_api'),
+    
 ]

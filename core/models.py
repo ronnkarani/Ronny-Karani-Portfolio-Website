@@ -117,6 +117,9 @@ class Project(models.Model):
     views = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
 
+    def get_absolute_url(self):
+        return reverse('project_details', kwargs={'slug': self.slug})
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
@@ -128,8 +131,7 @@ class Project(models.Model):
     def __str__(self):
         return self.title
     
-    def get_absolute_url(self):
-        return reverse('project_details', kwargs={'slug': self.slug})
+    
 
 
 # Blog Models
@@ -151,6 +153,9 @@ class BlogPost(models.Model):
     views = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
 
+    def get_absolute_url(self):
+        return reverse('blog_detail', kwargs={'slug': self.slug})
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
@@ -163,8 +168,7 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title
     
-    def get_absolute_url(self):
-        return reverse('blog_detail', kwargs={'slug': self.slug})
+    
 
 
 # Skill Models

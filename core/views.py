@@ -249,32 +249,16 @@ def add_testimonial(request):
 
     return render(request, 'add_testimonial.html', {'form': form})
 
-# API view for blog search
+# API view for blog & project search
+
 def blog_search_api(request):
-    query = request.GET.get('q', '').strip()
-    results = []
+    q = request.GET.get("q", "")
+    posts = BlogPost.objects.filter(title__icontains=q)[:10]
+    data = [{"title": p.title, "url": p.get_absolute_url()} for p in posts]
+    return JsonResponse(data, safe=False)
 
-    if query:
-        posts = BlogPost.objects.filter(title__icontains=query)[:5]  # limit to 5 results
-        for post in posts:
-            results.append({
-                "title": post.title,
-                "url": post.get_absolute_url() if hasattr(post, 'get_absolute_url') else f'/blog/{post.slug}/'
-            })
-
-    return JsonResponse(results, safe=False)
-
-# API view for project search
 def project_search_api(request):
-    query = request.GET.get('q', '').strip()
-    results = []
-
-    if query:
-        projects = Project.objects.filter(title__icontains=query)[:5]  # limit to 5 results
-        for project in projects:
-            results.append({
-                "title": project.title,
-                "url": project.get_absolute_url() if hasattr(project, 'get_absolute_url') else f'/projects/{project.slug}/'
-            })
-
-    return JsonResponse(results, safe=False)
+    q = request.GET.get("q", "")
+    projects = Project.objects.filter(title__icontains=q)[:10]
+    data = [{"title": p.title, "url": p.get_absolute_url()} for p in projects]
+    return JsonResponse(data, safe=False)

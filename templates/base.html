@@ -5,35 +5,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Dynamic Title -->
   <title>{% block title %}👨‍💻 Ronny Karani - Portfolio{% endblock %}</title>
+
+  <!-- SEO Meta -->
+  <meta name="description" content="Ronny Karani Portfolio Website - Showcasing projects, blog, and contact info. Full-stack developer specializing in web apps, AI, and creative tech.">
+  <meta name="keywords" content="Ronny Karani, Portfolio, Full-Stack Developer, Django, Web Development, AI, Tech Blog">
+  <meta name="author" content="Ronny Karani">
+
+  <!-- Open Graph for Social Sharing -->
+  <meta property="og:title" content="Ronny Karani | Portfolio">
+  <meta property="og:description" content="Showcasing my projects, blog, and contact info. Full-stack developer specializing in web apps, AI, and creative tech.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourdomain.com/">
+  <meta property="og:image" content="https://yourdomain.com/static/images/portfolio-preview.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ronny Karani | Portfolio">
+  <meta name="twitter:description" content="Showcasing my projects, blog, and contact info. Full-stack developer specializing in web apps, AI, and creative tech.">
+  <meta name="twitter:image" content="https://yourdomain.com/static/images/portfolio-preview.png">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ronny Karani",
+    "url": "https://yourdomain.com",
+    "sameAs": [
+      "https://github.com/ronnkarani",
+      "https://www.linkedin.com/in/ronny-karani"
+    ],
+    "jobTitle": "Full-Stack Developer",
+    "email": "karanironny25@gmail.com"
+  }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+  <!-- Fonts & Icons -->
   <link href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="preload" href="{% static 'fonts/font.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/font.woff2' %}" as="font" type="font/woff2" crossorigin>
 
+  <!-- CSS -->
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
   <script>
     const urls = {
       blogSearch: '{% url "blog_search_api" %}',
       projectSearch: '{% url "project_search_api" %}'
     };
   </script>
-  
   <script src="{% static 'js/script.js' %}" defer></script>
 
+  <!-- Dark Mode Toggle -->
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = localStorage.getItem('darkMode');
+      if(toggle === 'enabled') document.body.classList.add('dark-mode');
+    });
+  </script>
 
 </head>
+
 <body>
 
-      <!-- 🌟 Navbar -->
+  <!-- 🌟 Navbar -->
   {% include 'includes/navbar.html' %}
-
 
   <!-- ⭐ Particle Background -->
   <div id="particles-js"></div>
-
 
   <!-- Main Content Block -->
   <main>
@@ -42,16 +91,14 @@
 
   <!-- 🚀 Scroll to Top -->
   <button id="scrollTopBtn" title="Go to top">
-    <i class= "uil uil-arrow-up"></i>
+    <i class="uil uil-arrow-up"></i>
   </button>
 
-  <!-- Elfsight WhatsApp Chat WhatsApp Chat -->
-    <script src="https://elfsightcdn.com/platform.js" async></script>
-    <div  class="elfsight-app-9eebebbd-3eae-4577-a8ea-3f92c8fe4ac4" data-elfsight-app-lazy>
-    </div>
+  <!-- Elfsight WhatsApp Chat -->
+  <script src="https://elfsightcdn.com/platform.js" async></script>
+  <div class="elfsight-app-9eebebbd-3eae-4577-a8ea-3f92c8fe4ac4" data-elfsight-app-lazy></div>
 
-    {% include 'includes/footer.html' %}
+  {% include 'includes/footer.html' %}
 
 </body>
-
 </html>

@@ -87,7 +87,6 @@
       </div>
     </section>
 
-
     <!-- 💼 Skills Section -->
     <section class="section" id="skills">
       <div class="container">
@@ -106,7 +105,6 @@
       </div>
     </section>
 
-
     <!-- 🧪 Projects Section -->
     <section class="section" id="projects">
       <div class="container">
@@ -123,6 +121,12 @@
               <a href="{% url 'projects' %}" class="category-filter">View All Categories</a>
             {% endif %}
           </div>
+        </div>
+        <!-- Projects Search -->
+        <div class="search-container">
+          <input type="text" id="projectSearch" placeholder="Search Projects..." autocomplete="off">
+          <button id="projectSearchBtn">Search</button>
+          <ul id="projectSearchResults" class="search-results"></ul>
         </div>
         <div class="project-grid">
           {% for project in projects %}
@@ -161,6 +165,10 @@
             <p>No projects available.</p>
           {% endfor %}
         </div>
+        <div class="view-more-container" style="text-align: center; margin-top: 2rem;">
+            <a href="{% url 'projects' %}" class="button button--outline">View More Projects</a>
+        </div>
+
       </div>
     </section>
 
@@ -180,12 +188,18 @@
               <a href="{% url 'blog' %}" class="category-filter">View All Categories</a>
             {% endif %}
           </div>
+          <!-- Blog Search -->
+          <div class="search-container">
+            <input type="text" id="blogSearch" placeholder="Search Blog Posts..." autocomplete="off">
+            <button id="blogSearchBtn">Search</button>
+            <ul id="blogSearchResults" class="search-results"></ul>
+          </div>
         </div>
         <div class="blog-grid">
           {% for post in blog_posts %}
             <div class="blog-card">
               <picture>
-                <source srcset="{{ post.image|webp }}" type="image/webp">
+                <source srcset="{{ blog.image|webp }}" type="image/webp">
                 <img src="{{ post.image.url }}" alt="{{ post.title }}" class="blog-image" loading="lazy" decoding="async">
               </picture>
               <a href="{% url 'blog_detail' post.slug %}" class="blog-title-link" style="text-decoration: none;">
@@ -212,6 +226,10 @@
             <p>No blog posts available.</p>
           {% endfor %}
         </div>
+        <div class="view-more-container" style="text-align: center; margin-top: 2rem;">
+            <a href="{% url 'blog' %}" class="button button--outline">View More Blog Posts</a>
+        </div>
+
       </div>
     </section>
 
@@ -221,40 +239,40 @@
         <h2 class="section-title">💬 What My Clients Say </h2>
 
         <!-- ✨ Add Testimonial Button -->
-<div class="add-testimonial-container" style="text-align:center; margin-bottom: 1.5rem;">
-  {% if user.is_authenticated %}
-    {% if not user.is_superuser %}
-      {% if not user_has_testimonial %}
-        <button id="addTestimonialBtn" class="button button--outline">Add Testimonial</button>
-      {% else %}
-        <p style="color: #00c853;"><b>✅ You’ve already added your testimonial.</b></p>
-      {% endif %}
-    {% endif %}
-  {% else %}
-    <a href="{% url 'signup' %}" class="button button--outline">Sign Up to Add Testimonial</a>
-  {% endif %}
-</div>
+        <div class="add-testimonial-container" style="text-align:center; margin-bottom: 1.5rem;">
+          {% if user.is_authenticated %}
+            {% if not user.is_superuser %}
+              {% if not user_has_testimonial %}
+                <button id="addTestimonialBtn" class="button button--outline">Add Testimonial</button>
+              {% else %}
+                <p style="color: #00c853;"><b>✅ You’ve already added your testimonial.</b></p>
+              {% endif %}
+            {% endif %}
+          {% else %}
+            <a href="{% url 'signup' %}" class="button button--outline">Sign Up to Add Testimonial</a>
+          {% endif %}
+        </div>
 
 
-{% if not user_has_testimonial and user.is_authenticated %}
-<div id="testimonialForm" class="testimonial-form hidden">
-  <form action="{% url 'add_testimonial' %}" method="POST" enctype="multipart/form-data" class="auth-container" style="max-width:500px;margin:auto;">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="button">Submit Testimonial</button>
-  </form>
-</div>
-{% endif %}
+        {% if not user_has_testimonial and user.is_authenticated %}
+        <div id="testimonialForm" class="testimonial-form hidden">
+          <form action="{% url 'add_testimonial' %}" method="POST" enctype="multipart/form-data" class="auth-container" style="max-width:500px;margin:auto;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Submit Testimonial</button>
+          </form>
+        </div>
+        {% endif %}
 
 
-<!-- 🔽 Hidden Form -->
-<div id="testimonialForm" class="testimonial-form hidden">
-  <form action="{% url 'add_testimonial' %}" method="POST" enctype="multipart/form-data" class="auth-container" style="max-width:500px;margin:auto;">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="button">Submit Testimonial</button>
-  </form>
-</div>
+        <!-- 🔽 Hidden Form -->
+        <div id="testimonialForm" class="testimonial-form hidden">
+          <form action="{% url 'add_testimonial' %}" method="POST" enctype="multipart/form-data" class="auth-container" style="max-width:500px;margin:auto;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Submit Testimonial</button>
+          </form>
+        </div>
 
         <div class="testimonial-carousel">
           {% for testimonial in testimonials %}

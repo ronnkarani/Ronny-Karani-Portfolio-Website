@@ -4,6 +4,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.text import Truncator
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 # Hero Section models here.
@@ -126,6 +127,9 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse('project_details', kwargs={'slug': self.slug})
 
 
 # Blog Models
@@ -158,6 +162,9 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse('blog_detail', kwargs={'slug': self.slug})
 
 
 # Skill Models

@@ -21,6 +21,12 @@
         {% endfor %}
       </div>
     </div>
+    <!-- Projects Search -->
+    <div class="search-container">
+      <input type="text" id="projectPageSearch" placeholder="Search Projects..." autocomplete="off">
+      <button id="projectPageSearchBtn">Search</button>
+      <ul id="projectPageSearchResults" class="search-results"></ul>
+    </div>
     <div class="project-grid">
       {% for project in projects %}
         <div class="project-card">

@@ -13,14 +13,17 @@ from django.contrib.auth.decorators import login_required
 from .forms import TestimonialForm
 from django.conf import settings
 import os
+from django.http import JsonResponse
 
+
+# Utility function to get unapproved testimonial count
 def get_unapproved_testimonial_count(request):
     """Return number of unapproved testimonials (for admin only)."""
     if request.user.is_authenticated and request.user.is_superuser:
         return Testimonial.objects.filter(approved=False).count()
     return 0
 
-
+# Home page views here.
 def home(request):
     hero = Hero.objects.last()
     about = About.objects.last()
@@ -61,7 +64,6 @@ def home(request):
         },
     )
 
-
 # Sign Up page views here.
 def signup_view(request):
     if request.user.is_authenticated:
@@ -78,7 +80,6 @@ def signup_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
-
 
 # Login page views here.
 class CustomLoginView(LoginView):
@@ -98,14 +99,11 @@ class CustomLoginView(LoginView):
             return redirect('home')  # redirect logged-in users to home
         return super().dispatch(request, *args, **kwargs)
 
-
-
 # Logout page views here.
 class CustomLogoutView(LogoutView):
     # allow GET requests
     http_method_names = ['get', 'post']
     next_page = '/'  # redirect to home after logout
-
 
 # Blog page views here.
 def blog(request):
@@ -229,6 +227,8 @@ def send_message(request):
             messages.error(request, "❌ Oops! Something went wrong. Please try again later.")
 
         return redirect("contact")
+
+# Add Testimonial page views here.
 @login_required
 def add_testimonial(request):
     if Testimonial.objects.filter(user=request.user).exists():
@@ -249,3 +249,32 @@ def add_testimonial(request):
 
     return render(request, 'add_testimonial.html', {'form': form})
 
+# API view for blog search
+def blog_search_api(request):
+    query = request.GET.get('q', '').strip()
+    results = []
+
+    if query:
+        posts = BlogPost.objects.filter(title__icontains=query)[:5]  # limit to 5 results
+        for post in posts:
+            results.append({
+                "title": post.title,
+                "url": post.get_absolute_url() if hasattr(post, 'get_absolute_url') else f'/blog/{post.slug}/'
+            })
+
+    return JsonResponse(results, safe=False)
+
+# API view for project search
+def project_search_api(request):
+    query = request.GET.get('q', '').strip()
+    results = []
+
+    if query:
+        projects = Project.objects.filter(title__icontains=query)[:5]  # limit to 5 results
+        for project in projects:
+            results.append({
+                "title": project.title,
+                "url": project.get_absolute_url() if hasattr(project, 'get_absolute_url') else f'/projects/{project.slug}/'
+            })
+
+    return JsonResponse(results, safe=False)

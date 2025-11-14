@@ -200,3 +200,62 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  // --- Blog Search ---
+  const blogInput = document.getElementById("blogSearch");
+  const blogBtn = document.getElementById("blogSearchBtn");
+  const blogResults = document.getElementById("blogSearchResults");
+
+  if (blogBtn) {
+    blogBtn.addEventListener("click", () => {
+      const query = blogInput.value.trim();
+      if (!query) return;
+      fetch(`${urls.blogSearch}?q=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => {
+          blogResults.innerHTML = "";
+          if (data.length === 0) {
+            blogResults.innerHTML = "<li>No matching posts found.</li>";
+          } else {
+            data.forEach(item => {
+              const li = document.createElement("li");
+              li.innerHTML = `<a href="${item.url}">${item.title}</a>`;
+              blogResults.appendChild(li);
+            });
+          }
+        });
+    });
+  }
+
+  // --- Project Search ---
+  const projectInput = document.getElementById("projectSearch");
+  const projectBtn = document.getElementById("projectSearchBtn");
+  const projectResults = document.getElementById("projectSearchResults");
+
+  if (projectBtn) {
+    projectBtn.addEventListener("click", () => {
+      const query = projectInput.value.trim();
+      if (!query) return;
+      fetch(`${urls.projectSearch}?q=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => {
+          projectResults.innerHTML = "";
+          if (data.length === 0) {
+            projectResults.innerHTML = "<li>No matching projects found.</li>";
+          } else {
+            data.forEach(item => {
+              const li = document.createElement("li");
+              li.innerHTML = `<a href="${item.url}">${item.title}</a>`;
+              projectResults.appendChild(li);
+            });
+          }
+        });
+    });
+  }
+
+  // Optional: press Enter to trigger search
+  blogInput?.addEventListener("input", () => { blogBtn.click(); });
+  projectInput?.addEventListener("input", () => { projectBtn.click(); });
+
+});
